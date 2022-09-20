@@ -6,8 +6,7 @@ public class Gamefield : MonoBehaviour
 {
 
     [SerializeField] private GamefieldRow[] _rows;
-
-
+    
     public void InitGameField()
     {
         
@@ -18,13 +17,7 @@ public class Gamefield : MonoBehaviour
     {
         _rows[0].InitRows(OnFieldClicked);
     }
-
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
-
+    
     private void OnFieldClicked()
     {
         Debug.Log("Yet another click");
