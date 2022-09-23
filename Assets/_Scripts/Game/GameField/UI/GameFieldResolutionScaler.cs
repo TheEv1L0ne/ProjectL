@@ -1,9 +1,6 @@
-using System;
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
-public class GamefieldResolutionScaler : MonoBehaviour
+public class GameFieldResolutionScaler : MonoBehaviour
 {
     private void Awake()
     {
