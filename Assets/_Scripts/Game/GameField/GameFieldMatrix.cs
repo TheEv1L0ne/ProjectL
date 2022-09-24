@@ -6,8 +6,8 @@ using UnityEngine;
 
 public class GameFieldMatrix
 {
-    public const int Rows = 12;
-    public const int Columns = 9;
+    private const int Rows = 12;
+    private const int Columns = 9;
 
     private readonly GameFieldMatrixNode[,] _nodes;
 
@@ -26,6 +26,10 @@ public class GameFieldMatrix
         }
     }
 
+    /// <summary>
+    /// Only change state of nodes that are under click pattern and that are valid.
+    /// </summary>
+    /// <param name="coordsList">List of valid coordinates.</param>
     public void SetNodeStates(List<Vector2Int> coordsList)
     {
         foreach (var coords in coordsList)
@@ -34,12 +38,23 @@ public class GameFieldMatrix
         }
     }
 
+    /// <summary>
+    /// Returns only valid indexes (x,y) of matrix fields.
+    /// </summary>
+    /// <param name="coordsList">List of all indexes (x,y) that we want to check.</param>
+    /// <returns></returns>
     public List<Vector2Int> GetValidFields(List<Vector2Int> coordsList)
     {
         return coordsList.Where(coords => IsValidMatrixIndex(coords.x, coords.y)).ToList();
     }
 
 
+    /// <summary>
+    /// Check if index (x,y) in matrix is valid.
+    /// </summary>
+    /// <param name="x">Index of row.</param>
+    /// <param name="y">Index of column.</param>
+    /// <returns></returns>
     private bool IsValidMatrixIndex(int x, int y)
     {
         return x is >= 0 and <= Rows - 1 && y is >= 0 and <= Columns - 1;
