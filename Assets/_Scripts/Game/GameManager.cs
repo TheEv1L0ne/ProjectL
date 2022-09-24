@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using _Scripts.Game.GameField;
+using _Scripts.Game.GameField.UI;
 using UnityEngine;
 
 public class GameManager : Singleton<GameManager>
@@ -27,9 +28,23 @@ public class GameManager : Singleton<GameManager>
             var listOfValidCoords = _matrix.GetValidFields(listOfCoords);
             _matrix.SetNodeStates(listOfValidCoords);
 
-            foreach (var variablCoord in listOfValidCoords)
+            List<GameFieldNodeData> nodeDataList = new List<GameFieldNodeData>();
+            foreach (var validCoord in listOfValidCoords)
             {
-                Debug.Log($"--->> [{variablCoord.x},{variablCoord.y}] ");
+                var data = new GameFieldNodeData
+                {
+                    index = validCoord,
+                    state = _matrix.GetNodeState(validCoord)
+                };
+
+                nodeDataList.Add(data);
+            }
+            
+            gameField.ChangeFieldState(nodeDataList);
+
+            foreach (var validCoord in listOfValidCoords)
+            {
+                Debug.Log($"--->> [{validCoord.x},{validCoord.y}] ");
             }
 
         });

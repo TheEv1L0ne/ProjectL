@@ -3,7 +3,7 @@ using UnityEngine;
 
 public class GameFieldNode : MonoBehaviour
 {
-    [SerializeField] private Sprite nodeSprite;
+    [SerializeField] private SpriteRenderer nodeSprite;
     
     private Action<int> _action;
     
@@ -15,5 +15,10 @@ public class GameFieldNode : MonoBehaviour
     private void OnMouseUpAsButton()
     {
         _action.Invoke(transform.GetSiblingIndex());
+    }
+
+    public void ChangeNodeGraphics(bool state)
+    {
+        nodeSprite.color = state ? Color.green : Color.white;
     }
 }

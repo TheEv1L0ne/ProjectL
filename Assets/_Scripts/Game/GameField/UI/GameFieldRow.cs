@@ -21,4 +21,9 @@ public class GameFieldRow : MonoBehaviour
     {
         _action.Invoke(transform.GetSiblingIndex(), x);
     }
+
+    public void ChangeNodeGraphics(int index, bool state)
+    {
+        columnObjects[index].ChangeNodeGraphics(state);
+    }
 }

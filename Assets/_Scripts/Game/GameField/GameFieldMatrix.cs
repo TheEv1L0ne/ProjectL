@@ -10,7 +10,7 @@ public class GameFieldMatrix
     private const int Columns = 9;
 
     private readonly GameFieldMatrixNode[,] _nodes;
-
+    
     public GameFieldMatrix()
     {
         _nodes = new GameFieldMatrixNode[12,9];
@@ -36,6 +36,11 @@ public class GameFieldMatrix
         {
             _nodes[coords.x, coords.y].active = !_nodes[coords.x, coords.y].active;
         }
+    }
+
+    public bool GetNodeState(Vector2Int index)
+    {
+        return _nodes[index.x, index.y].active;
     }
 
     /// <summary>
