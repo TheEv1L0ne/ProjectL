@@ -41,12 +41,6 @@ public class GameManager : Singleton<GameManager>
             }
             
             gameField.ChangeFieldState(nodeDataList);
-
-            foreach (var validCoord in listOfValidCoords)
-            {
-                Debug.Log($"--->> [{validCoord.x},{validCoord.y}] ");
-            }
-
         });
     }
 }
