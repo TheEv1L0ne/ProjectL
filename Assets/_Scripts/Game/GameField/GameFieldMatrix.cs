@@ -11,9 +11,12 @@ public class GameFieldMatrix
 
     private readonly GameFieldMatrixNode[,] _nodes;
     
+    public int RowsCount => Rows;
+    public int ColumnsCount => Columns;
+    
     public GameFieldMatrix()
     {
-        _nodes = new GameFieldMatrixNode[12,9];
+        _nodes = new GameFieldMatrixNode[Rows,Columns];
         for (int i = 0; i < _nodes.GetLength(0); i++)
         {
             for (int j = 0; j < _nodes.GetLength(1); j++)
@@ -25,7 +28,7 @@ public class GameFieldMatrix
             }
         }
     }
-
+    
     /// <summary>
     /// Only change state of nodes that are under click pattern and that are valid.
     /// </summary>
