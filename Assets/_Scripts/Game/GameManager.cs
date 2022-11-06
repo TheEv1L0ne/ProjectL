@@ -1,7 +1,7 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
-using System.Reflection;
 using _Scripts.Game.GameField;
 using _Scripts.Game.GameField.UI;
 using UnityEngine;
@@ -9,11 +9,26 @@ using Random = UnityEngine.Random;
 
 public class GameManager : Singleton<GameManager>
 {
+    #region Editor References
+
     [SerializeField] private GameField gameField;
+
+    #endregion
+
+    #region Private Fields
 
     private GameFieldMatrix _matrix;
     private ClickPattern _clickPattern;
+    private int _numberOfMoves = 20;
 
+    #endregion
+
+    #region Actions
+
+    public static Action<int> NoOfMovesChanged;
+
+    #endregion
+    
     private void Start()
     {
         _matrix = new GameFieldMatrix();
@@ -25,6 +40,18 @@ public class GameManager : Singleton<GameManager>
     }
 
     private void FieldClicked(int i, int j)
+    {
+        if (HasMoreMoves())
+        {
+            FieldState(i,j);
+        }
+        else
+        {
+            //TODO: Out of move
+        }
+    }
+
+    private void FieldState(int i, int j)
     {
         var x = i;
         var y = j;
@@ -49,14 +76,28 @@ public class GameManager : Singleton<GameManager>
         gameField.ChangeFieldState(nodeDataList);
     }
 
+    private bool HasMoreMoves()
+    {
+        if (_numberOfMoves <= 0) 
+            return false;
+        
+        _numberOfMoves--;
+        
+        NoOfMovesChanged?.Invoke(_numberOfMoves);
+        
+        Debug.Log($"--->> {_numberOfMoves}");
+        
+        return true;
+    }
+
     private void InitGame()
     {
-        for (int i = 0; i < 20; i++)
+        for (int i = 0; i < _numberOfMoves; i++)
         {
             var x = Random.Range(0, _matrix.RowsCount);
             var y = Random.Range(0, _matrix.ColumnsCount);
             
-            FieldClicked(x,y);
+            FieldState(x,y);
         }
     }
 }
