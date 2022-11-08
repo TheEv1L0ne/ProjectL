@@ -32,13 +32,12 @@ public class GameManager : Singleton<GameManager>, IObserver
 
     private void OnEnable()
     {
-        ObserverManager.Instance.Attach(Instance);
+        ObserverManager.Attach(Instance);
     }
 
     private void OnDisable()
     {
-        if(ObserverManager.Instance != null)
-            ObserverManager.Instance.Detach(Instance);
+        ObserverManager.Detach(Instance);
     }
 
     private void Start()
@@ -95,7 +94,7 @@ public class GameManager : Singleton<GameManager>, IObserver
         
         _numberOfMoves--;
         
-        ObserverManager.Instance.Notify(new ODType[]{ODType.UI}, new object[]{_numberOfMoves});
+        ObserverManager.Notify(new ODType[]{ODType.UI}, new object[]{_numberOfMoves});
         
         Debug.Log($"--->> {_numberOfMoves}");
         

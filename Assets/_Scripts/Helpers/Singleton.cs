@@ -4,13 +4,13 @@ public abstract class Singleton<T> : Singleton where T : MonoBehaviour
     #region  Fields
     private static T _instance;
     private static readonly object Lock = new object();
-    [SerializeField]
-    private bool _persistent = true;
+    [SerializeField] private bool _persistent = true;
     #endregion
     static Singleton()
     {
     }
-    public static T Instance
+
+    protected static T Instance
     {
         get
         {

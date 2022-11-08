@@ -1,36 +1,29 @@
 //TODO: RENAME THIS INTO SOMETHING MORE APPROPRIATE 
 
 using System;
-using System.Collections;
 using System.Collections.Generic;
 
-public class ObserverManager : Singleton<ObserverManager>, ISubject
+public static class ObserverManager
 {
-    private List<IObserver> _observers;
-
-    protected override void OnAwake()
+    private static readonly List<IObserver> Observers = new();
+    
+    public static void Attach(IObserver observer)
     {
-        base.OnAwake();
-        _observers = new List<IObserver>();
+        if(Observers != null && !Observers.Contains(observer))
+            Observers.Add(observer);
     }
 
-    public void Attach(IObserver observer)
+    public static void Detach(IObserver observer)
     {
-        if(_observers != null && !_observers.Contains(observer))
-            _observers.Add(observer);
+        if(Observers != null && Observers.Contains(observer))
+            Observers.Remove(observer);
     }
 
-    public void Detach(IObserver observer)
+    public static void Notify(ODType[] type, Object[] data)
     {
-        if(_observers != null && _observers.Contains(observer))
-            _observers.Remove(observer);
-    }
-
-    public void Notify(ODType[] type, Object[] data)
-    {
-        if (_observers == null) return;
+        if (Observers == null) return;
         
-        foreach (var observer in _observers)
+        foreach (var observer in Observers)
         {
             observer.UpdateState(type, data);
         }

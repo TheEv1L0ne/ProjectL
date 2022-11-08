@@ -11,13 +11,12 @@ public class UIManager : Singleton<UIManager>, IObserver
 
     private void OnEnable()
     {
-        ObserverManager.Instance.Attach(Instance);
+        ObserverManager.Attach(Instance);
     }
 
     private void OnDisable()
     {
-        if(ObserverManager.Instance != null)
-            ObserverManager.Instance.Detach(Instance);
+        ObserverManager.Detach(Instance);
     }
 
     private void NoOfMovesChanged(int moves)
