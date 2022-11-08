@@ -3,7 +3,7 @@
 using System;
 using System.Collections.Generic;
 
-public static class ObserverManager
+public class ObserverManager
 {
     private static readonly List<IObserver> Observers = new();
     
