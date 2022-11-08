@@ -67,4 +67,9 @@ public class GameFieldMatrix
     {
         return x is >= 0 and <= Rows - 1 && y is >= 0 and <= Columns - 1;
     }
+
+    public bool IsSolved()
+    {
+        return _nodes.Cast<GameFieldMatrixNode>().All(node => !node.active);
+    }
 }

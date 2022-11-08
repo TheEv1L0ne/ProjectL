@@ -24,12 +24,6 @@ public class GameManager : Singleton<GameManager>, IObserver
 
     #endregion
 
-    #region Actions
-
-    public static Action<int> NoOfMovesChanged;
-
-    #endregion
-
     private void OnEnable()
     {
         ObserverManager.Attach(Instance);
@@ -67,11 +61,13 @@ public class GameManager : Singleton<GameManager>, IObserver
         var x = i;
         var y = j;
 
+        //Update game logic part 
         var offsets = _clickPattern.ListOfCoordsOffset();
         var listOfCoords = offsets.Select(offset => new Vector2Int(x + offset.x, y + offset.y)).ToList();
         var listOfValidCoords = _matrix.GetValidFields(listOfCoords);
         _matrix.SetNodeStates(listOfValidCoords);
 
+        //Update Interface part
         List<GameFieldNodeData> nodeDataList = new List<GameFieldNodeData>();
         foreach (var validCoord in listOfValidCoords)
         {
@@ -85,6 +81,8 @@ public class GameManager : Singleton<GameManager>, IObserver
         }
 
         gameField.ChangeFieldState(nodeDataList);
+        
+        Debug.Log($"Solved ?? --->>{_matrix.IsSolved()}");
     }
 
     private bool HasMoreMoves()
