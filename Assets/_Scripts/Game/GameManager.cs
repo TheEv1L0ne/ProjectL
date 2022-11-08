@@ -46,13 +46,23 @@ public class GameManager : Singleton<GameManager>, IObserver
 
     private void FieldClicked(int i, int j)
     {
-        if (HasMoreMoves())
+        if (_numberOfMoves <= 0) return;
+        
+        FieldState(i,j);
+
+        _numberOfMoves--;
+            
+        ObserverManager.Notify(new ODType[]{ODType.UI}, new object[]{_numberOfMoves});
+            
+        if (_matrix.IsSolved())
         {
-            FieldState(i,j);
+            //TODO: SHOW FINISH WINDOW
+            Debug.Log($"WIN");
         }
-        else
+        else if (_numberOfMoves == 0)
         {
-            //TODO: Out of move
+            //TODO: SHOW FAILED WINDOW
+            Debug.Log($"LOSE");
         }
     }
 
@@ -81,24 +91,8 @@ public class GameManager : Singleton<GameManager>, IObserver
         }
 
         gameField.ChangeFieldState(nodeDataList);
-        
-        Debug.Log($"Solved ?? --->>{_matrix.IsSolved()}");
     }
-
-    private bool HasMoreMoves()
-    {
-        if (_numberOfMoves <= 0) 
-            return false;
-        
-        _numberOfMoves--;
-        
-        ObserverManager.Notify(new ODType[]{ODType.UI}, new object[]{_numberOfMoves});
-        
-        Debug.Log($"--->> {_numberOfMoves}");
-        
-        return true;
-    }
-
+    
     private void InitGame()
     {
         for (int i = 0; i < _numberOfMoves; i++)
