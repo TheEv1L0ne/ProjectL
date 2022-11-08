@@ -5,9 +5,10 @@ using System.Linq;
 using _Scripts.Game.GameField;
 using _Scripts.Game.GameField.UI;
 using UnityEngine;
+using Object = System.Object;
 using Random = UnityEngine.Random;
 
-public class GameManager : Singleton<GameManager>
+public class GameManager : Singleton<GameManager>, IObserver
 {
     #region Editor References
 
@@ -28,7 +29,18 @@ public class GameManager : Singleton<GameManager>
     public static Action<int> NoOfMovesChanged;
 
     #endregion
-    
+
+    private void OnEnable()
+    {
+        ObserverManager.Instance.Attach(Instance);
+    }
+
+    private void OnDisable()
+    {
+        if(ObserverManager.Instance != null)
+            ObserverManager.Instance.Detach(Instance);
+    }
+
     private void Start()
     {
         _matrix = new GameFieldMatrix();
@@ -83,7 +95,7 @@ public class GameManager : Singleton<GameManager>
         
         _numberOfMoves--;
         
-        NoOfMovesChanged?.Invoke(_numberOfMoves);
+        ObserverManager.Instance.Notify(new ODType[]{ODType.UI}, new object[]{_numberOfMoves});
         
         Debug.Log($"--->> {_numberOfMoves}");
         
@@ -99,5 +111,10 @@ public class GameManager : Singleton<GameManager>
             
             FieldState(x,y);
         }
+    }
+
+    public void UpdateState(ODType[] type, Object[] data)
+    {
+        
     }
 }
