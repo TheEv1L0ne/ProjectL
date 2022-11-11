@@ -16,5 +16,11 @@ public class PopupPauseGame : PopupBase
            ObserverManager.Notify(new ODType[] {ODType.Game}, GameState.PLAYING.ToString());
            Destroy(this.gameObject);
         });
+        
+        restartGameBtn.onClick.AddListener(() =>
+        {
+            ObserverManager.Notify(new ODType[] {ODType.Game}, GameState.RESTART.ToString());
+            Destroy(this.gameObject);
+        });
     }
 }

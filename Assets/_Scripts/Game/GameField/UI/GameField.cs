@@ -22,7 +22,7 @@ public class GameField : MonoBehaviour
 
     private void OnFieldClicked(int x, int y)
     {
-        _action.Invoke(x, y);
+        _action?.Invoke(x, y);
     }
 
     public void ChangeFieldState(List<GameFieldNodeData> dataList)
@@ -30,6 +30,14 @@ public class GameField : MonoBehaviour
         foreach (var data in dataList)
         {
             rows[data.index.x].ChangeNodeGraphics(data.index.y, data.state);
+        }
+    }
+
+    public void ResetFieldRows()
+    {
+        foreach (var row in rows)
+        {
+            row.ResetFields();
         }
     }
 }

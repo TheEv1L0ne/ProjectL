@@ -1,11 +1,9 @@
 using System;
-using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using _Scripts.Game.GameField;
 using _Scripts.Game.GameField.UI;
 using UnityEngine;
-using Object = System.Object;
 using Random = UnityEngine.Random;
 
 public class GameManager : Singleton<GameManager>, IObserver
@@ -39,9 +37,17 @@ public class GameManager : Singleton<GameManager>, IObserver
     {
         _matrix = new GameFieldMatrix();
         _clickPattern = new ClickPattern();
-        
         gameField.InitGameField(FieldClicked);
+        gameField.ResetFieldRows();
 
+        InitGame();
+    }
+
+    private void Reset()
+    {
+        _matrix = new GameFieldMatrix();
+        _clickPattern = new ClickPattern();
+        gameField.ResetFieldRows();
         InitGame();
     }
 
@@ -62,11 +68,13 @@ public class GameManager : Singleton<GameManager>, IObserver
         {
             //TODO: SHOW FINISH WINDOW
             Debug.Log($"WIN");
+            _state = GameState.WIN;
         }
         else if (_numberOfMoves == 0)
         {
             //TODO: SHOW FAILED WINDOW
             Debug.Log($"LOSE");
+            _state = GameState.LOSE;
         }
     }
 
@@ -100,6 +108,7 @@ public class GameManager : Singleton<GameManager>, IObserver
     private void InitGame()
     {
         _state = GameState.PLAYING;
+        _numberOfMoves = 20;
         
         for (int i = 0; i < _numberOfMoves; i++)
         {
@@ -108,6 +117,8 @@ public class GameManager : Singleton<GameManager>, IObserver
             
             FieldState(x,y);
         }
+        
+        ObserverManager.Notify(new ODType[]{ODType.UI}, _numberOfMoves.ToString());
     }
 
     public void UpdateState(ODType[] type, string data)
@@ -115,5 +126,9 @@ public class GameManager : Singleton<GameManager>, IObserver
         if (!type.Contains(ODType.Game)) return;
 
         _state = Enum.Parse<GameState>(data);
+        if (_state == GameState.RESTART)
+        {
+            Reset();
+        }
     }
 }

@@ -4,4 +4,5 @@ public enum GameState
     WIN = 1,
     LOSE = 2,
     PAUSE = 3,
+    RESTART = 4,
 }

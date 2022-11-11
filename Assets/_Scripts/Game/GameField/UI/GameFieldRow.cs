@@ -19,11 +19,19 @@ public class GameFieldRow : MonoBehaviour
     
     private void OnFieldClicked(int x)
     {
-        _action.Invoke(transform.GetSiblingIndex(), x);
+        _action?.Invoke(transform.GetSiblingIndex(), x);
     }
 
     public void ChangeNodeGraphics(int index, bool state)
     {
         columnObjects[index].ChangeNodeGraphics(state);
+    }
+
+    public void ResetFields()
+    {
+        foreach (var gameFieldNode in columnObjects)
+        {
+            gameFieldNode.ResetNode();
+        }
     }
 }

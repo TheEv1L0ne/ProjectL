@@ -14,11 +14,16 @@ public class GameFieldNode : MonoBehaviour
 
     private void OnMouseUpAsButton()
     {
-        _action.Invoke(transform.GetSiblingIndex());
+        _action?.Invoke(transform.GetSiblingIndex());
     }
 
     public void ChangeNodeGraphics(bool state)
     {
         nodeSprite.color = state ? Color.green : Color.white;
+    }
+
+    public void ResetNode()
+    {
+        nodeSprite.color = Color.white;
     }
 }
