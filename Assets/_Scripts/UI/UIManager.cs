@@ -8,6 +8,7 @@ using Object = System.Object;
 public class UIManager : Singleton<UIManager>, IObserver
 {
     [SerializeField] private HUD hud;
+    [SerializeField] private BotHUD botHUD;
 
     private void OnEnable()
     {
@@ -24,11 +25,21 @@ public class UIManager : Singleton<UIManager>, IObserver
         hud.SetMoves(moves.ToString());
     }
 
-    public void UpdateState(ODType[] type, Object[] data)
+    public void UpdateState(ODType[] type, string data)
     {
         if (!type.Contains(ODType.UI)) return;
         
         var moves = data[0].ToString();
         hud.SetMoves(moves);
+    }
+
+    protected override void OnAwake()
+    {
+        base.OnAwake();
+        
+        botHUD.SettingsButton.onClick.AddListener(() =>
+        {
+            ObserverManager.Notify(new ODType[] {ODType.Game}, GameState.PAUSE.ToString());
+        });
     }
 }

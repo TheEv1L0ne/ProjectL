@@ -21,6 +21,7 @@ public class GameManager : Singleton<GameManager>, IObserver
     private GameFieldMatrix _matrix;
     private ClickPattern _clickPattern;
     private int _numberOfMoves = 20;
+    private GameState _state;
 
     #endregion
 
@@ -46,13 +47,15 @@ public class GameManager : Singleton<GameManager>, IObserver
 
     private void FieldClicked(int i, int j)
     {
+        if(_state != GameState.PLAYING) return;
+        
         if (_numberOfMoves <= 0) return;
         
         FieldState(i,j);
 
         _numberOfMoves--;
             
-        ObserverManager.Notify(new ODType[]{ODType.UI}, new object[]{_numberOfMoves});
+        ObserverManager.Notify(new ODType[]{ODType.UI}, _numberOfMoves.ToString());
             
         if (_matrix.IsSolved())
         {
@@ -95,6 +98,8 @@ public class GameManager : Singleton<GameManager>, IObserver
     
     private void InitGame()
     {
+        _state = GameState.PLAYING;
+        
         for (int i = 0; i < _numberOfMoves; i++)
         {
             var x = Random.Range(0, _matrix.RowsCount);
@@ -104,8 +109,10 @@ public class GameManager : Singleton<GameManager>, IObserver
         }
     }
 
-    public void UpdateState(ODType[] type, Object[] data)
+    public void UpdateState(ODType[] type, string data)
     {
-        
+        if (!type.Contains(ODType.Game)) return;
+
+        _state = Enum.Parse<GameState>(data);
     }
 }

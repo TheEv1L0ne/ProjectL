@@ -19,7 +19,7 @@ public class ObserverManager
             Observers.Remove(observer);
     }
 
-    public static void Notify(ODType[] type, Object[] data)
+    public static void Notify(ODType[] type, string data)
     {
         if (Observers == null) return;
         
