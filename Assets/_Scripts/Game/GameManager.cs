@@ -53,6 +53,7 @@ public class GameManager : Singleton<GameManager>, IObserver
         
         FieldState(i,j);
 
+        Debug.Log($"_numberOfMoves --->> {_numberOfMoves}");
         _numberOfMoves--;
             
         ObserverManager.Notify(new ODType[]{ODType.UI}, _numberOfMoves.ToString());

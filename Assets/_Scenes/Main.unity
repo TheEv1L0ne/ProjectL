@@ -412,6 +412,7 @@ MonoBehaviour:
   _persistent: 1
   hud: {fileID: 413214137}
   botHUD: {fileID: 1116171015}
+  popupRoot: {fileID: 1857988609}
 --- !u!4 &91819815
 Transform:
   m_ObjectHideFlags: 0

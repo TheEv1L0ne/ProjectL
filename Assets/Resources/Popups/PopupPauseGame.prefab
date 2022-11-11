@@ -131,6 +131,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 812555654928491880}
+  - component: {fileID: 6131710935209486899}
   m_Layer: 5
   m_Name: PopupPauseGame
   m_TagString: Untagged
@@ -160,6 +161,20 @@ RectTransform:
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
+--- !u!114 &6131710935209486899
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 614350505180932418}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3489261d0685442438fdcecbfb28a2fc, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  resumeGameBtn: {fileID: 7524973235921204565}
+  restartGameBtn: {fileID: 1607797725148159408}
 --- !u!1 &1044220135105793747
 GameObject:
   m_ObjectHideFlags: 0
