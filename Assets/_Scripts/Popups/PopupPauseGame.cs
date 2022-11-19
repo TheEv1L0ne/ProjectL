@@ -13,13 +13,13 @@ public class PopupPauseGame : PopupBase
     {
         resumeGameBtn.onClick.AddListener(() =>
         {
-           ObserverManager.Notify(new ODType[] {ODType.Game}, GameState.PLAYING.ToString());
-           Destroy(this.gameObject);
+            ObserverManager.Notify(GameState.PLAYING.ToString(), ODType.Game);
+            Destroy(this.gameObject);
         });
-        
+
         restartGameBtn.onClick.AddListener(() =>
         {
-            ObserverManager.Notify(new ODType[] {ODType.Game}, GameState.RESTART.ToString());
+            ObserverManager.Notify(GameState.RESTART.ToString(), ODType.Game);
             Destroy(this.gameObject);
         });
     }

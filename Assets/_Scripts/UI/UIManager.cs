@@ -22,35 +22,33 @@ public class UIManager : Singleton<UIManager>, IObserver
     {
         ObserverManager.Detach(Instance);
     }
-    
-    public void UpdateState(ODType[] type, string data)
+
+    public void UpdateState(string data, params object[] receivers)
     {
-        if (!type.Contains(ODType.UI)) return;
-        
-        var moves = data;
-        Debug.Log($" data[0] --->> {data}");
-        hud.SetMoves(moves);
+        if (!receivers.Contains(ODType.UI)) return;
+
+        hud.SetMoves(data);
     }
 
     protected override void OnAwake()
     {
         base.OnAwake();
-        
+
         botHUD.SettingsButton.onClick.AddListener(() =>
         {
-            ObserverManager.Notify(new ODType[] {ODType.Game}, GameState.PAUSE.ToString());
+            ObserverManager.Notify(GameState.PAUSE.ToString(), ODType.Game);
             LoadGOusingAddress();
         });
     }
 
     private GameObject m_myGameObject;
-    
+
     public void LoadGOusingAddress()
     {
         Addressables.InstantiateAsync("Popups/PopupPauseGame", popupRoot).Completed +=
             OnLoadDone;
     }
- 
+
     public void OnLoadDone(AsyncOperationHandle<GameObject> obj)
     {
         m_myGameObject = obj.Result;

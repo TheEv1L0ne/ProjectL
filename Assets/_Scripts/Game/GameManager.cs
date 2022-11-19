@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using _Scripts.Game.GameField;
 using _Scripts.Game.GameField.UI;
+using _Scripts.Helpers.ObserverPattern;
 using UnityEngine;
 using Random = UnityEngine.Random;
 
@@ -53,17 +54,16 @@ public class GameManager : Singleton<GameManager>, IObserver
 
     private void FieldClicked(int i, int j)
     {
-        if(_state != GameState.PLAYING) return;
-        
-        if (_numberOfMoves <= 0) return;
-        
-        FieldState(i,j);
+        if (_state != GameState.PLAYING) return;
 
-        Debug.Log($"_numberOfMoves --->> {_numberOfMoves}");
+        if (_numberOfMoves <= 0) return;
+
+        FieldState(i, j);
+
         _numberOfMoves--;
-            
-        ObserverManager.Notify(new ODType[]{ODType.UI}, _numberOfMoves.ToString());
-            
+        
+        ObserverManager.Notify(_numberOfMoves.ToString(), ODType.UI);
+
         if (_matrix.IsSolved())
         {
             //TODO: SHOW FINISH WINDOW
@@ -104,26 +104,26 @@ public class GameManager : Singleton<GameManager>, IObserver
 
         gameField.ChangeFieldState(nodeDataList);
     }
-    
+
     private void InitGame()
     {
         _state = GameState.PLAYING;
         _numberOfMoves = 20;
-        
+
         for (int i = 0; i < _numberOfMoves; i++)
         {
             var x = Random.Range(0, _matrix.RowsCount);
             var y = Random.Range(0, _matrix.ColumnsCount);
-            
-            FieldState(x,y);
+
+            FieldState(x, y);
         }
-        
-        ObserverManager.Notify(new ODType[]{ODType.UI}, _numberOfMoves.ToString());
+
+        ObserverManager.Notify(_numberOfMoves.ToString(), ODType.UI);
     }
 
-    public void UpdateState(ODType[] type, string data)
+    public void UpdateState(string data, params object[] receivers)
     {
-        if (!type.Contains(ODType.Game)) return;
+        if (!receivers.Contains(ODType.Game)) return;
 
         _state = Enum.Parse<GameState>(data);
         if (_state == GameState.RESTART)
