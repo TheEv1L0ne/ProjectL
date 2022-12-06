@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Linq;
 using _Scripts.Game.GameField;
 using _Scripts.Game.GameField.UI;
-using _Scripts.Helpers.ObserverPattern;
 using Newtonsoft.Json.Linq;
 using UnityEngine;
 using Random = UnityEngine.Random;
@@ -62,9 +61,9 @@ public class GameManager : Singleton<GameManager>, IObserver
         FieldState(i, j);
 
         _numberOfMoves--;
-        var observerData = new ObserverData();
-        observerData.AddData("moves", _numberOfMoves);
-        ObserverManager.Notify(observerData.Data, ODType.UI);
+
+        ObserverManager.AddData("moves", _numberOfMoves);
+        ObserverManager.Notify( ODType.UI);
 
         if (_matrix.IsSolved())
         {
@@ -120,9 +119,8 @@ public class GameManager : Singleton<GameManager>, IObserver
             FieldState(x, y);
         }
         
-        var observerData = new ObserverData();
-        observerData.AddData("moves", _numberOfMoves);
-        ObserverManager.Notify(observerData.Data, ODType.UI);
+        ObserverManager.AddData("moves", _numberOfMoves);
+        ObserverManager.Notify( ODType.UI);
     }
 
     public void UpdateState(JObject data, params object[] receivers)

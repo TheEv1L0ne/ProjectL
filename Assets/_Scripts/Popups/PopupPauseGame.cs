@@ -1,7 +1,3 @@
-using System;
-using System.Collections;
-using System.Collections.Generic;
-using _Scripts.Helpers.ObserverPattern;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -14,18 +10,16 @@ public class PopupPauseGame : PopupBase
     {
         resumeGameBtn.onClick.AddListener(() =>
         {
-            var observerData = new ObserverData();
-            observerData.AddData("state", GameState.PLAYING);
-            ObserverManager.Notify(observerData.Data, ODType.Game);
+            ObserverManager.AddData("state", GameState.PLAYING);
+            ObserverManager.Notify(ODType.Game);
             
             Destroy(this.gameObject);
         });
 
         restartGameBtn.onClick.AddListener(() =>
         {
-            var observerData = new ObserverData();
-            observerData.AddData("state", GameState.RESTART);
-            ObserverManager.Notify(observerData.Data, ODType.Game);
+            ObserverManager.AddData("state", GameState.RESTART);
+            ObserverManager.Notify(ODType.Game);
 
             Destroy(this.gameObject);
         });

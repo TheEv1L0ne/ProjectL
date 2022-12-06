@@ -1,13 +1,7 @@
-using System;
-using System.Collections;
-using System.Collections.Generic;
 using System.Linq;
-using _Scripts.Helpers.ObserverPattern;
-using Newtonsoft.Json;
 using UnityEngine;
 using UnityEngine.AddressableAssets;
 using UnityEngine.ResourceManagement.AsyncOperations;
-using Object = System.Object;
 using Newtonsoft.Json.Linq;
 
 public class UIManager : Singleton<UIManager>, IObserver
@@ -42,9 +36,8 @@ public class UIManager : Singleton<UIManager>, IObserver
 
         botHUD.SettingsButton.onClick.AddListener(() =>
         {
-            var observerData = new ObserverData();
-            observerData.AddData("state", GameState.PAUSE);
-            ObserverManager.Notify(observerData.Data, ODType.Game);
+            ObserverManager.AddData("state", GameState.PAUSE);
+            ObserverManager.Notify( ODType.Game);
 
             LoadGOusingAddress();
         });
