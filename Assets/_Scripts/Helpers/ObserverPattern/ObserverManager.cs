@@ -3,6 +3,8 @@
 using System;
 using System.Collections.Generic;
 using _Scripts.Helpers.ObserverPattern;
+using Newtonsoft.Json.Linq;
+using UnityEngine;
 
 public class ObserverManager
 {
@@ -26,7 +28,7 @@ public class ObserverManager
 
         foreach (var observer in Observers)
         {
-            observer.UpdateState(data, receivers);
+            observer.UpdateState(JObject.Parse(data) , receivers);
         }
     }
 }

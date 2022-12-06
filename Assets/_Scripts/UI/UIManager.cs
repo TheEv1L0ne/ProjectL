@@ -2,10 +2,13 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using _Scripts.Helpers.ObserverPattern;
+using Newtonsoft.Json;
 using UnityEngine;
 using UnityEngine.AddressableAssets;
 using UnityEngine.ResourceManagement.AsyncOperations;
 using Object = System.Object;
+using Newtonsoft.Json.Linq;
 
 public class UIManager : Singleton<UIManager>, IObserver
 {
@@ -23,11 +26,14 @@ public class UIManager : Singleton<UIManager>, IObserver
         ObserverManager.Detach(Instance);
     }
 
-    public void UpdateState(string data, params object[] receivers)
+    public void UpdateState(JObject data, params object[] receivers)
     {
         if (!receivers.Contains(ODType.UI)) return;
-
-        hud.SetMoves(data);
+        
+        if(data.TryGetValue("moves", out var moves))
+        {
+            hud.SetMoves(moves.ToString());
+        }
     }
 
     protected override void OnAwake()
@@ -36,7 +42,10 @@ public class UIManager : Singleton<UIManager>, IObserver
 
         botHUD.SettingsButton.onClick.AddListener(() =>
         {
-            ObserverManager.Notify(GameState.PAUSE.ToString(), ODType.Game);
+            var observerData = new ObserverData();
+            observerData.AddData("state", GameState.PAUSE);
+            ObserverManager.Notify(observerData.Data, ODType.Game);
+
             LoadGOusingAddress();
         });
     }

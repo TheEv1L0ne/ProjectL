@@ -4,6 +4,7 @@ using System.Linq;
 using _Scripts.Game.GameField;
 using _Scripts.Game.GameField.UI;
 using _Scripts.Helpers.ObserverPattern;
+using Newtonsoft.Json.Linq;
 using UnityEngine;
 using Random = UnityEngine.Random;
 
@@ -61,8 +62,9 @@ public class GameManager : Singleton<GameManager>, IObserver
         FieldState(i, j);
 
         _numberOfMoves--;
-        
-        ObserverManager.Notify(_numberOfMoves.ToString(), ODType.UI);
+        var observerData = new ObserverData();
+        observerData.AddData("moves", _numberOfMoves);
+        ObserverManager.Notify(observerData.Data, ODType.UI);
 
         if (_matrix.IsSolved())
         {
@@ -117,18 +119,33 @@ public class GameManager : Singleton<GameManager>, IObserver
 
             FieldState(x, y);
         }
-
-        ObserverManager.Notify(_numberOfMoves.ToString(), ODType.UI);
+        
+        var observerData = new ObserverData();
+        observerData.AddData("moves", _numberOfMoves);
+        ObserverManager.Notify(observerData.Data, ODType.UI);
     }
 
-    public void UpdateState(string data, params object[] receivers)
+    public void UpdateState(JObject data, params object[] receivers)
     {
         if (!receivers.Contains(ODType.Game)) return;
 
-        _state = Enum.Parse<GameState>(data);
-        if (_state == GameState.RESTART)
+        if(data.TryGetValue("state", out var state))
         {
-            Reset();
+            switch ((int)state)
+            {
+                case (int)GameState.RESTART:
+                    Reset();
+                    break;
+                case (int)GameState.PAUSE:
+                    _state = GameState.PAUSE;
+                    break;
+                case (int)GameState.WIN:
+                    break;
+                case  (int)GameState.PLAYING:
+                    _state = GameState.PLAYING;
+                    break;;
+            }
         }
+        
     }
 }
