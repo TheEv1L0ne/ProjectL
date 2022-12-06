@@ -28,6 +28,11 @@ public class ObserverManager
     {
         if (Observers == null) return;
 
+        if (_data.Count == 0)
+        {
+            Debug.LogWarning($"Sending No Data!");
+        }
+
         foreach (var observer in Observers)
         {
             observer.UpdateState(JObject.Parse(JsonConvert.SerializeObject(_data)) , receivers);
