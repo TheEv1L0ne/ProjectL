@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 using UnityEngine.AddressableAssets;
@@ -20,7 +21,7 @@ public class UIManager : Singleton<UIManager>, IObserver
         ObserverManager.Detach(Instance);
     }
 
-    public void UpdateState(JObject data, params object[] receivers)
+    public void UpdateState(Dictionary<string, object> data, params object[] receivers)
     {
         if (!receivers.Contains(ODType.UI)) return;
         

@@ -123,7 +123,7 @@ public class GameManager : Singleton<GameManager>, IObserver
         ObserverManager.Notify( ODType.UI);
     }
 
-    public void UpdateState(JObject data, params object[] receivers)
+    public void UpdateState( Dictionary<string, object> data, params object[] receivers)
     {
         if (!receivers.Contains(ODType.Game)) return;
 

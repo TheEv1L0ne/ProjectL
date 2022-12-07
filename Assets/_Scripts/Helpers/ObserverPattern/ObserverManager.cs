@@ -35,7 +35,7 @@ public class ObserverManager
 
         foreach (var observer in Observers)
         {
-            observer.UpdateState(JObject.Parse(JsonConvert.SerializeObject(_data)) , receivers);
+            observer.UpdateState(_data , receivers);
         }
 
         ClearData();
