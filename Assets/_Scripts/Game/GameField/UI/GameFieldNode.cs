@@ -19,11 +19,13 @@ public class GameFieldNode : MonoBehaviour
 
     public void ChangeNodeGraphics(bool state)
     {
-        nodeSprite.color = state ? Color.green : Color.white;
+        //nodeSprite.color = state ? Color.green : Color.white;
+        nodeSprite.gameObject.SetActive(state);
     }
 
     public void ResetNode()
     {
-        nodeSprite.color = Color.white;
+        //nodeSprite.color = Color.white;
+        nodeSprite.gameObject.SetActive(false);
     }
 }
