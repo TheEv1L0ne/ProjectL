@@ -1,10 +1,7 @@
-using System;
 using System.Collections.Generic;
 using System.Linq;
 using _Scripts.Game.GameField;
 using _Scripts.Game.GameField.UI;
-using Newtonsoft.Json.Linq;
-using Unity.VisualScripting;
 using UnityEngine;
 using Random = UnityEngine.Random;
 
@@ -22,6 +19,9 @@ public class GameManager : Singleton<GameManager>, IObserver
     private ClickPattern _clickPattern;
     private int _numberOfMoves;
     private GameState _state;
+
+
+    private List<Vector2Int> _movesPlayed =  new();
 
     #endregion
 
@@ -48,6 +48,23 @@ public class GameManager : Singleton<GameManager>, IObserver
         gameField.ResetFieldRows();
         InitGame();
     }
+    
+    private void InitGame()
+    {
+        _state = GameState.PLAYING;
+        _numberOfMoves = 10;
+
+        for (int i = 0; i < _numberOfMoves; i++)
+        {
+            var x = Random.Range(0, _matrix.RowsCount);
+            var y = Random.Range(0, _matrix.ColumnsCount);
+
+            FieldState(x, y);
+        }
+        
+        ObserverManager.AddData("moves", _numberOfMoves);
+        ObserverManager.Notify( ODType.UI);
+    }
 
     private void FieldClicked(int i, int j)
     {
@@ -56,6 +73,7 @@ public class GameManager : Singleton<GameManager>, IObserver
         if (_numberOfMoves <= 0) return;
 
         FieldState(i, j);
+        _movesPlayed.Add(new Vector2Int(i,j));
 
         _numberOfMoves--;
 
@@ -103,23 +121,24 @@ public class GameManager : Singleton<GameManager>, IObserver
         gameField.ChangeFieldState(nodeDataList);
     }
 
-    private void InitGame()
+    private void UndoMove()
     {
-        _state = GameState.PLAYING;
-        _numberOfMoves = 10;
-
-        for (int i = 0; i < _numberOfMoves; i++)
-        {
-            var x = Random.Range(0, _matrix.RowsCount);
-            var y = Random.Range(0, _matrix.ColumnsCount);
-
-            FieldState(x, y);
-        }
+        if(_state != GameState.PLAYING) return;
         
+        if (_movesPlayed.Count <= 0) return;
+        
+        var i = _movesPlayed[^1].x;
+        var j = _movesPlayed[^1].y;
+            
+        FieldState(i, j);
+        _numberOfMoves++;
+            
+        _movesPlayed.RemoveAt(_movesPlayed.Count-1);
+            
         ObserverManager.AddData("moves", _numberOfMoves);
         ObserverManager.Notify( ODType.UI);
     }
-
+    
     public void UpdateState( Dictionary<string, object> data, params object[] receivers)
     {
         if (!receivers.Contains(ODType.Game)) return;
@@ -133,21 +152,15 @@ public class GameManager : Singleton<GameManager>, IObserver
 
         if (data.TryGetValue("state", out var state))
         {
-            switch ((int) state)
-            {
-                case (int) GameState.RESTART:
-                    SetUpGame(p);
-                    break;
-                case (int) GameState.PAUSE:
-                    _state = GameState.PAUSE;
-                    break;
-                case (int) GameState.WIN:
-                    break;
-                case (int) GameState.PLAYING:
-                    _state = GameState.PLAYING;
-                    break;
-                    ;
-            }
+            _state = (GameState) (int) state;
+            
+            if(_state == GameState.RESTART)
+                SetUpGame(p);
+        }
+
+        if (data.TryGetValue("undo", out _))
+        {
+            UndoMove();
         }
     }
 }

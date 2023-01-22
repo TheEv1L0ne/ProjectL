@@ -41,12 +41,12 @@ public class ObserverManager
         ClearData();
     }
 
-    public static void ClearData()
+    private static void ClearData()
     {
         _data = new Dictionary<string, object>();
     }
     
-    public static void AddData(string key, object value)
+    public static void AddData(string key, object value = null)
     {
         if (!_data.ContainsValue(key))
         {

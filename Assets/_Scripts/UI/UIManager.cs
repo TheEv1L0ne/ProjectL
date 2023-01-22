@@ -42,6 +42,12 @@ public class UIManager : Singleton<UIManager>, IObserver
 
             LoadGOusingAddress();
         });
+        
+        botHUD.UndoButton.onClick.AddListener(() =>
+        {
+            ObserverManager.AddData("undo");
+            ObserverManager.Notify( ODType.Game);
+        });
     }
 
     private GameObject m_myGameObject;
