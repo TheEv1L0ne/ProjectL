@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using System.Linq;
+using _Scripts.Popups;
 using UnityEngine;
 using UnityEngine.AddressableAssets;
 using UnityEngine.ResourceManagement.AsyncOperations;
@@ -10,6 +11,8 @@ public class UIManager : Singleton<UIManager>, IObserver
     [SerializeField] private HUD hud;
     [SerializeField] private BotHUD botHUD;
     [SerializeField] private Transform popupRoot;
+
+    private PopupController _popupController;
 
     private void OnEnable()
     {
@@ -35,12 +38,15 @@ public class UIManager : Singleton<UIManager>, IObserver
     {
         base.OnAwake();
 
+        _popupController = new PopupController();
+        _popupController.Init(popupRoot);
+
         botHUD.SettingsButton.onClick.AddListener(() =>
         {
             ObserverManager.AddData("state", GameState.PAUSE);
             ObserverManager.Notify( ODType.Game);
 
-            LoadGOusingAddress();
+            _popupController.LoadGOusingAddress();
         });
         
         botHUD.UndoButton.onClick.AddListener(() =>
@@ -48,18 +54,5 @@ public class UIManager : Singleton<UIManager>, IObserver
             ObserverManager.AddData("undo");
             ObserverManager.Notify( ODType.Game);
         });
-    }
-
-    private GameObject m_myGameObject;
-
-    public void LoadGOusingAddress()
-    {
-        Addressables.InstantiateAsync("Popups/PopupPauseGame", popupRoot).Completed +=
-            OnLoadDone;
-    }
-
-    public void OnLoadDone(AsyncOperationHandle<GameObject> obj)
-    {
-        m_myGameObject = obj.Result;
     }
 }
