@@ -136,7 +136,7 @@ GameObject:
   - component: {fileID: 39697013}
   - component: {fileID: 39697012}
   m_Layer: 5
-  m_Name: Button
+  m_Name: SttingsButton
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -754,7 +754,7 @@ GameObject:
   - component: {fileID: 915645928}
   - component: {fileID: 915645927}
   m_Layer: 5
-  m_Name: Button (1)
+  m_Name: UndoButton
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -952,6 +952,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   settingsButton: {fileID: 39697012}
+  undoButton: {fileID: 915645927}
 --- !u!224 &1116171016
 RectTransform:
   m_ObjectHideFlags: 0
