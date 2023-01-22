@@ -1,10 +1,13 @@
+using _Scripts.Game.GameField;
 using UnityEngine;
+using UnityEngine.Serialization;
 using UnityEngine.UI;
 
 public class PopupPauseGame : PopupBase
 {
     [SerializeField] private Button resumeGameBtn;
-    [SerializeField] private Button restartGameBtn;
+    [SerializeField] private Button startPlusGameBtn;
+    [SerializeField] private Button startXGameBtn;
 
     private void Awake()
     {
@@ -16,9 +19,19 @@ public class PopupPauseGame : PopupBase
             Destroy(this.gameObject);
         });
 
-        restartGameBtn.onClick.AddListener(() =>
+        startPlusGameBtn.onClick.AddListener(() =>
         {
             ObserverManager.AddData("state", GameState.RESTART);
+            ObserverManager.AddData("pattern", new PlusPattern());
+            ObserverManager.Notify(ODType.Game);
+
+            Destroy(this.gameObject);
+        });
+        
+        startXGameBtn.onClick.AddListener(() =>
+        {
+            ObserverManager.AddData("state", GameState.RESTART);
+            ObserverManager.AddData("pattern", new XPattern());
             ObserverManager.Notify(ODType.Game);
 
             Destroy(this.gameObject);

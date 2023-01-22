@@ -7,8 +7,8 @@ public class HUD : MonoBehaviour
 {
     [SerializeField] private TextMeshProUGUI moves;
 
-    public void SetMoves(string moves)
+    public void SetMoves(string movesLeft)
     {
-        this.moves.text = moves;
+        moves.text = $"Moves left: {movesLeft}";
     }
 }

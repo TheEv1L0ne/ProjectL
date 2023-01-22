@@ -4,6 +4,7 @@ using System.Linq;
 using _Scripts.Game.GameField;
 using _Scripts.Game.GameField.UI;
 using Newtonsoft.Json.Linq;
+using Unity.VisualScripting;
 using UnityEngine;
 using Random = UnityEngine.Random;
 
@@ -19,7 +20,7 @@ public class GameManager : Singleton<GameManager>, IObserver
 
     private GameFieldMatrix _matrix;
     private ClickPattern _clickPattern;
-    private int _numberOfMoves = 20;
+    private int _numberOfMoves;
     private GameState _state;
 
     #endregion
@@ -36,18 +37,14 @@ public class GameManager : Singleton<GameManager>, IObserver
 
     private void Start()
     {
-        _matrix = new GameFieldMatrix();
-        _clickPattern = new ClickPattern();
         gameField.InitGameField(FieldClicked);
-        gameField.ResetFieldRows();
-
-        InitGame();
+        SetUpGame(new XPattern());
     }
 
-    private void Reset()
+    private void SetUpGame(ClickPattern pattern)
     {
         _matrix = new GameFieldMatrix();
-        _clickPattern = new ClickPattern();
+        _clickPattern = pattern ?? new PlusPattern();
         gameField.ResetFieldRows();
         InitGame();
     }
@@ -109,7 +106,7 @@ public class GameManager : Singleton<GameManager>, IObserver
     private void InitGame()
     {
         _state = GameState.PLAYING;
-        _numberOfMoves = 20;
+        _numberOfMoves = 10;
 
         for (int i = 0; i < _numberOfMoves; i++)
         {
@@ -127,23 +124,30 @@ public class GameManager : Singleton<GameManager>, IObserver
     {
         if (!receivers.Contains(ODType.Game)) return;
 
-        if(data.TryGetValue("state", out var state))
+        ClickPattern p = null;
+        
+        if (data.TryGetValue("pattern", out var pattern))
         {
-            switch ((int)state)
+            p = (ClickPattern)pattern;
+        }
+
+        if (data.TryGetValue("state", out var state))
+        {
+            switch ((int) state)
             {
-                case (int)GameState.RESTART:
-                    Reset();
+                case (int) GameState.RESTART:
+                    SetUpGame(p);
                     break;
-                case (int)GameState.PAUSE:
+                case (int) GameState.PAUSE:
                     _state = GameState.PAUSE;
                     break;
-                case (int)GameState.WIN:
+                case (int) GameState.WIN:
                     break;
-                case  (int)GameState.PLAYING:
+                case (int) GameState.PLAYING:
                     _state = GameState.PLAYING;
-                    break;;
+                    break;
+                    ;
             }
         }
-        
     }
 }
