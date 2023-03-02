@@ -38,7 +38,7 @@ public class GameManager : Singleton<GameManager>, IObserver
     private void Start()
     {
         gameField.InitGameField(FieldClicked);
-        SetUpGame(new XPattern());
+        SetUpGame(new PlusPattern());
     }
 
     private void SetUpGame(ClickPattern pattern)
@@ -52,13 +52,23 @@ public class GameManager : Singleton<GameManager>, IObserver
     private void InitGame()
     {
         _state = GameState.PLAYING;
-        _numberOfMoves = 10;
-
-        for (int i = 0; i < _numberOfMoves; i++)
+        _numberOfMoves = 20;
+        
+        var usedIds = new List<int>();
+        
+        for (var i = 0; i < _numberOfMoves; i++)
         {
-            var x = Random.Range(0, _matrix.RowsCount);
-            var y = Random.Range(0, _matrix.ColumnsCount);
+            int x;
+            int y;
 
+            do
+            {
+                x = Random.Range(0, _matrix.RowsCount);
+                y = Random.Range(0, _matrix.ColumnsCount);
+            } while (usedIds.Contains(x * y));
+            
+            usedIds.Add(x*y);
+            
             FieldState(x, y);
         }
         
