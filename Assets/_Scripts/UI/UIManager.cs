@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using _Scripts.Popups;
@@ -54,5 +55,13 @@ public class UIManager : Singleton<UIManager>, IObserver
             ObserverManager.AddData("undo");
             ObserverManager.Notify( ODType.Game);
         });
+    }
+
+    private void Update()
+    {
+        if (Input.GetKeyUp(KeyCode.Space))
+        {
+            _popupController.RemoveLastPopup();
+        }
     }
 }

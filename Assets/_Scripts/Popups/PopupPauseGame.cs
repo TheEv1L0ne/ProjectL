@@ -15,8 +15,8 @@ public class PopupPauseGame : PopupBase
         {
             ObserverManager.AddData("state", GameState.PLAYING);
             ObserverManager.Notify(ODType.Game);
-            
-            Destroy(this.gameObject);
+
+            DestroyPopup();
         });
 
         startPlusGameBtn.onClick.AddListener(() =>
@@ -34,7 +34,7 @@ public class PopupPauseGame : PopupBase
             ObserverManager.AddData("pattern", new XPattern());
             ObserverManager.Notify(ODType.Game);
 
-            Destroy(this.gameObject);
+            DestroyPopup();
         });
     }
 }
