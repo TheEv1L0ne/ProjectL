@@ -23,7 +23,7 @@ public class PopupPauseGame : PopupBase
 
     #region Privates
 
-    private int _numberOfMoves = 0;
+    private int _numberOfMoves;
 
     #endregion
     

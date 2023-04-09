@@ -19,11 +19,12 @@ public class GameManager : Singleton<GameManager>, IObserver
     private ClickPattern _clickPattern;
     private int _numberOfMoves;
     private GameState _state;
-
-
-    private List<Vector2Int> _movesPlayed =  new();
+    
+    private readonly List<Vector2Int> _movesPlayed =  new();
 
     #endregion
+
+    private const int DefaultMoves = 10;
 
     private void OnEnable()
     {
@@ -52,7 +53,9 @@ public class GameManager : Singleton<GameManager>, IObserver
     private void InitGame(int numberOfMoves)
     {
         _state = GameState.PLAYING;
-        _numberOfMoves = numberOfMoves;
+        _numberOfMoves = numberOfMoves <= 0 
+            ? DefaultMoves 
+            : numberOfMoves;
         
         var usedIds = new List<int>();
         
