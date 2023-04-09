@@ -38,21 +38,21 @@ public class GameManager : Singleton<GameManager>, IObserver
     private void Start()
     {
         gameField.InitGameField(FieldClicked);
-        SetUpGame(new PlusPattern());
+        SetUpGame(new PlusPattern(), 20);
     }
 
-    private void SetUpGame(ClickPattern pattern)
+    private void SetUpGame(ClickPattern pattern, int numberOfMoves)
     {
         _matrix = new GameFieldMatrix();
         _clickPattern = pattern ?? new PlusPattern();
         gameField.ResetFieldRows();
-        InitGame();
+        InitGame(numberOfMoves);
     }
     
-    private void InitGame()
+    private void InitGame(int numberOfMoves)
     {
         _state = GameState.PLAYING;
-        _numberOfMoves = 20;
+        _numberOfMoves = numberOfMoves;
         
         var usedIds = new List<int>();
         
@@ -154,10 +154,16 @@ public class GameManager : Singleton<GameManager>, IObserver
         if (!receivers.Contains(ODType.Game)) return;
 
         ClickPattern p = null;
+        var numberOfMoves = 0;
         
         if (data.TryGetValue("pattern", out var pattern))
         {
             p = (ClickPattern)pattern;
+        }
+
+        if (data.TryGetValue("numberOfMoves", out var moves))
+        {
+            numberOfMoves = (int)moves;
         }
 
         if (data.TryGetValue("state", out var state))
@@ -165,7 +171,7 @@ public class GameManager : Singleton<GameManager>, IObserver
             _state = (GameState) (int) state;
             
             if(_state == GameState.RESTART)
-                SetUpGame(p);
+                SetUpGame(p, numberOfMoves);
         }
 
         if (data.TryGetValue("undo", out _))
