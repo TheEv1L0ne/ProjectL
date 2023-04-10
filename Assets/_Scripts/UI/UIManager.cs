@@ -28,10 +28,27 @@ public class UIManager : Singleton<UIManager>, IObserver
     public void UpdateState(Dictionary<string, object> data, params object[] receivers)
     {
         if (!receivers.Contains(ODType.UI)) return;
+
+        BaseParams baseParams = null;
+        PopupAction popupAction;
         
         if(data.TryGetValue("moves", out var moves))
         {
             hud.SetMoves(moves.ToString());
+        }
+
+        if (data.TryGetValue("popupParams", out var popupParams))
+        {
+            baseParams = (BaseParams) popupParams;
+        }
+
+        if (data.TryGetValue("popupShowAction", out var popupShowAction))
+        {
+            if(baseParams == null) return;
+
+            popupAction = (PopupAction) popupShowAction;
+            
+            _popupController.ShowPopup(baseParams, popupAction);
         }
     }
 
@@ -41,20 +58,6 @@ public class UIManager : Singleton<UIManager>, IObserver
 
         _popupController = new PopupController();
         _popupController.Init(popupRoot);
-
-        botHUD.SettingsButton.onClick.AddListener(() =>
-        {
-            ObserverManager.AddData("state", GameState.PAUSE);
-            ObserverManager.Notify( ODType.Game);
-
-            _popupController.LoadGOusingAddress();
-        });
-        
-        botHUD.UndoButton.onClick.AddListener(() =>
-        {
-            ObserverManager.AddData("undo");
-            ObserverManager.Notify( ODType.Game);
-        });
     }
 
     private void Update()
@@ -62,6 +65,12 @@ public class UIManager : Singleton<UIManager>, IObserver
         if (Input.GetKeyUp(KeyCode.Space))
         {
             _popupController.RemoveLastPopup();
+        }
+
+        if (Input.GetKeyUp(KeyCode.A))
+        {
+            var x = new PauseGameParams();
+            _popupController.LoadGoUsingClass(x);
         }
     }
 }

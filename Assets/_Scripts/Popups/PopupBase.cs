@@ -8,4 +8,9 @@ public class PopupBase : MonoBehaviour
     {
         Destroy(this.gameObject);
     }
+
+    public virtual void OnShow(BaseParams popupParams)
+    {
+        
+    }
 }

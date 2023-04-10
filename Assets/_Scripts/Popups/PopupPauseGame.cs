@@ -77,6 +77,12 @@ public class PopupPauseGame : PopupBase
         });
     }
 
+    public override void OnShow(BaseParams popupParams)
+    {
+        var pParams = (PauseGameParams) popupParams;
+        
+    }
+
     private void SetGameWithPattern(ClickPattern pattern)
     {
         ObserverManager.AddData("state", GameState.RESTART);
