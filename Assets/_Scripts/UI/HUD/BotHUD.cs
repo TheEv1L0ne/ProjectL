@@ -13,7 +13,8 @@ public class BotHUD : MonoBehaviour
         {
             ObserverManager.AddData("state", GameState.PAUSE);
             
-            ObserverManager.AddData("popupParams", new PauseGameParams());
+            ObserverManager.AddData("popupParams", new PauseGameParams
+                {SomeString = "Something"});
             ObserverManager.AddData("popupShowAction", PopupAction.Later);
             
             ObserverManager.Notify( ODType.Game, ODType.UI);

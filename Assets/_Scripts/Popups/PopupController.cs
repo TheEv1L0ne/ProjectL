@@ -9,7 +9,7 @@ namespace _Scripts.Popups
     public class PopupController
     {
         private readonly Stack<PopupBase> _popupStack = new ();
-        private readonly Stack<BaseParams> _popupParamsStack = new ();
+        private readonly Queue<BaseParams> _popupParamsStack = new ();
 
         private Transform _popupRoot;
 
@@ -25,6 +25,7 @@ namespace _Scripts.Popups
         
         public void LoadGoUsingClass(BaseParams popupParams)
         {
+            _popupParamsStack.Enqueue(popupParams);
             var address = $"Popups/Popup{(popupParams.GetType().Name).Replace("Params", "")}";
             
             Addressables.InstantiateAsync(address, _popupRoot).Completed +=
@@ -36,7 +37,8 @@ namespace _Scripts.Popups
             var popup = obj.Result.GetComponent<PopupBase>();
             _popupStack.Push(popup);
             
-            popup.OnShow(new PauseGameParams());
+            var baseParams = _popupParamsStack.Dequeue();
+            popup.OnShow(baseParams);
         }
 
         
@@ -55,6 +57,7 @@ namespace _Scripts.Popups
 
     public enum PopupAction
     {
+        Next,
         Later,
         Now,
         Over

@@ -80,7 +80,9 @@ public class PopupPauseGame : PopupBase
     public override void OnShow(BaseParams popupParams)
     {
         var pParams = (PauseGameParams) popupParams;
-        
+
+        Debug.Log($"--->>{pParams.SomeString}");
+
     }
 
     private void SetGameWithPattern(ClickPattern pattern)
