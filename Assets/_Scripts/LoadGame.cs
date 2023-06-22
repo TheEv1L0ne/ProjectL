@@ -21,7 +21,7 @@ public class LoadGame : MonoBehaviour
 
         await SignInAnonymouslyAsync();
 
-        SceneManager.LoadScene("Game");
+        SceneManager.LoadScene("Main");
 
     }
     async Task SignInAnonymouslyAsync()
