@@ -13,4 +13,9 @@ public class PopupBase : MonoBehaviour
     {
         
     }
+
+    public virtual void OnClose()
+    {
+        
+    }
 }

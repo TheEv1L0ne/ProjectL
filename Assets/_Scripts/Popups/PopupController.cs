@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.AddressableAssets;
@@ -8,8 +9,7 @@ namespace _Scripts.Popups
 {
     public class PopupController
     {
-        private readonly Stack<PopupBase> _popupStack = new ();
-        private readonly Queue<BaseParams> _popupParamsStack = new ();
+        private readonly List<PopupBase> _popupBasesList = new();
 
         private Transform _popupRoot;
 
@@ -22,10 +22,9 @@ namespace _Scripts.Popups
         {
             LoadGoUsingClass(popupParams);
         }
-        
-        public void LoadGoUsingClass(BaseParams popupParams)
+
+        private void LoadGoUsingClass(BaseParams popupParams)
         {
-            _popupParamsStack.Enqueue(popupParams);
             var address = $"Popups/Popup{(popupParams.GetType().Name).Replace("Params", "")}";
             
             Addressables.InstantiateAsync(address, _popupRoot).Completed +=
@@ -35,23 +34,37 @@ namespace _Scripts.Popups
         private void OnLoadDone(AsyncOperationHandle<GameObject> obj)
         {
             var popup = obj.Result.GetComponent<PopupBase>();
-            _popupStack.Push(popup);
-            
-            var baseParams = _popupParamsStack.Dequeue();
+
+            _popupBasesList.Add(popup);
+
+            var baseParams = new PauseGameParams();
             popup.OnShow(baseParams);
         }
 
+        public void RemovePopup(PopupBase popup)
+        {
+            if(_popupBasesList.Count == 0)
+                return;
+            
+            if(!_popupBasesList.Contains(popup))
+                return;
+
+            var id = _popupBasesList.IndexOf(popup);
+            var p = _popupBasesList[id];
+            p.DestroyPopup();
+
+            _popupBasesList.RemoveAt(id);
+        }
         
         public void RemoveLastPopup()
         {
-            var popup = _popupStack.Pop();
+            if(_popupBasesList.Count == 0)
+                return;
+            
+            var popup = _popupBasesList[0];
             popup.DestroyPopup();
-        }
-        
-        public void LoadGoUsingAddress()
-        {
-            Addressables.InstantiateAsync("Popups/PopupPauseGame", _popupRoot).Completed +=
-                OnLoadDone;
+            
+            _popupBasesList.RemoveAt(0);
         }
     }
 

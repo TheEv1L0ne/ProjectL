@@ -92,6 +92,9 @@ public class PopupPauseGame : PopupBase
         ObserverManager.AddData("numberOfMoves", _numberOfMoves);
         ObserverManager.Notify(ODType.Game);
 
-        DestroyPopup();
+        ObserverManager.AddData("closePopup", this);
+        ObserverManager.Notify(ODType.UI);
+        
+        // DestroyPopup();
     }
 }

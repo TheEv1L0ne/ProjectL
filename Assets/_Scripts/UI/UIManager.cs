@@ -50,6 +50,11 @@ public class UIManager : Singleton<UIManager>, IObserver
             
             _popupController.ShowPopup(baseParams, popupAction);
         }
+
+        if (data.TryGetValue("closePopup", out var popupToClose))
+        {
+            _popupController.RemovePopup((PopupBase)popupToClose);
+        }
     }
 
     protected override void OnAwake()
@@ -65,12 +70,6 @@ public class UIManager : Singleton<UIManager>, IObserver
         if (Input.GetKeyUp(KeyCode.Space))
         {
             _popupController.RemoveLastPopup();
-        }
-
-        if (Input.GetKeyUp(KeyCode.A))
-        {
-            var x = new PauseGameParams();
-            _popupController.LoadGoUsingClass(x);
         }
     }
 }
