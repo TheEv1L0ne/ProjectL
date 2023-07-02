@@ -21,7 +21,6 @@ public class LoadGame : MonoBehaviour
 
         await SignInAnonymouslyAsync();
 
-        SceneManager.LoadScene("Main");
 
     }
     async Task SignInAnonymouslyAsync()
@@ -74,5 +73,10 @@ public class LoadGame : MonoBehaviour
           {
               Debug.Log("Player session could not be refreshed and expired.");
           };
+    }
+
+    public void PlayPressed()
+    {
+        SceneManager.LoadScene("Menu");
     }
 }
