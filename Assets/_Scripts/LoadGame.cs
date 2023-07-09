@@ -14,14 +14,11 @@ public class LoadGame : MonoBehaviour
         {
             await UnityServices.InitializeAsync();
             await RemoteConfigService.Instance.FetchConfigsAsync(new UserAttributes(), new AppAttributes());
-            MaxSdkCallbacks.OnSdkInitializedEvent += (MaxSdkBase.SdkConfiguration sdkConfiguration) =>
-            {
-                
-            };
 
-            MaxSdk.SetSdkKey("YOUR_SDK_KEY_HERE");
-            MaxSdk.SetUserId(AuthenticationService.Instance.PlayerId);
-            MaxSdk.InitializeSdk();
+             while(!AdsManager.Instance.IsInit)
+             {
+                await Task.Delay(100);
+             }
 
         }
         catch (Exception e)
@@ -80,8 +77,8 @@ public class LoadGame : MonoBehaviour
         };
 
         AuthenticationService.Instance.Expired += () =>
-          {
-              Debug.Log("Player session could not be refreshed and expired.");
-          };
+        {
+            Debug.Log("Player session could not be refreshed and expired.");
+        };
     }
 }

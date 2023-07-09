@@ -1,12 +1,12 @@
 using UnityEngine;
 
-public abstract class InterstitialAdBase 
+public abstract class InterstitialAdBase<T> : RemoteConfigBase<T>
 {
-    private string _adUnitId;
+    protected abstract string _adUnitId {get;}
     private MonoBehaviour _root;
-    public InterstitialAdBase(string adUnitId, MonoBehaviour root)
+    public InterstitialAdBase(MonoBehaviour root)
     {
-        this._adUnitId = adUnitId;
+        this._root = root;
     }
 
     int retryAttempt;

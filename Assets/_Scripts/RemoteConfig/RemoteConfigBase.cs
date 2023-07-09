@@ -12,7 +12,8 @@ public abstract class RemoteConfigBase<T>
 
         foreach (var property in properties)
         {
-            var propertysType = property.GetType();
+            if(!RemoteConfigService.Instance.appConfig.HasKey($"{namePrefix}.{property.Name}")) continue;
+            var propertysType = property.PropertyType;
             if (propertysType == typeof(int))
             {
                 property.SetValue(this, RemoteConfigService.Instance.appConfig.GetInt($"{namePrefix}.{property.Name}"));
@@ -42,7 +43,8 @@ public abstract class RemoteConfigBase<T>
         var fields = typeT.GetFields();
         foreach (var field in fields)
         {
-            var fieldsType = field.GetType();
+            if(!RemoteConfigService.Instance.appConfig.HasKey($"{namePrefix}.{field.Name}")) continue;
+            var fieldsType = field.FieldType;
             if (fieldsType == typeof(int))
             {
                 field.SetValue(this, RemoteConfigService.Instance.appConfig.GetInt($"{namePrefix}.{field.Name}"));
