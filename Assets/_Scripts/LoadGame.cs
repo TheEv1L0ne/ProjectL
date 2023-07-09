@@ -13,12 +13,17 @@ public class LoadGame : MonoBehaviour
         try
         {
             await UnityServices.InitializeAsync();
+#if UNITY_EDITOR
+            RemoteConfigService.Instance.SetEnvironmentID("39f705e9-5798-4d1c-9c04-15874699ee03");
+#else
+            RemoteConfigService.Instance.SetEnvironmentID("99924111-4ca2-4c5d-94c8-cb1176fa6319");
+#endif
             await RemoteConfigService.Instance.FetchConfigsAsync(new UserAttributes(), new AppAttributes());
 
-             while(!AdsManager.Instance.IsInit)
-             {
+            while (!AdsManager.Instance.IsInit)
+            {
                 await Task.Delay(100);
-             }
+            }
 
         }
         catch (Exception e)
