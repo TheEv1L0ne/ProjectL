@@ -7,7 +7,7 @@ public class MaxAdsManager : AdsManager
 
         MaxSdkCallbacks.OnSdkInitializedEvent += (MaxSdkBase.SdkConfiguration sdkConfiguration) =>
            {
-               // AppLovin SDK is initialized, start loading ads
+            
            };
 
         MaxSdk.SetSdkKey("AcFHXalt8Rc7BxdWXVT9mEHdJEU5mqa6S1RWThx42tvir5e21wlVmATSc3bxTZrFv1uKQB048ZyS4rVU43i64V");

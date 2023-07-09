@@ -4,6 +4,7 @@ using Unity.Services.Authentication;
 using System.Threading.Tasks;
 using System;
 using UnityEngine.SceneManagement;
+using Unity.Services.RemoteConfig;
 
 public class LoadGame : MonoBehaviour
 {
@@ -12,6 +13,16 @@ public class LoadGame : MonoBehaviour
         try
         {
             await UnityServices.InitializeAsync();
+            await RemoteConfigService.Instance.FetchConfigsAsync(new UserAttributes(), new AppAttributes());
+            MaxSdkCallbacks.OnSdkInitializedEvent += (MaxSdkBase.SdkConfiguration sdkConfiguration) =>
+            {
+                
+            };
+
+            MaxSdk.SetSdkKey("YOUR_SDK_KEY_HERE");
+            MaxSdk.SetUserId(AuthenticationService.Instance.PlayerId);
+            MaxSdk.InitializeSdk();
+
         }
         catch (Exception e)
         {
@@ -20,8 +31,6 @@ public class LoadGame : MonoBehaviour
         SetupEvents();
 
         await SignInAnonymouslyAsync();
-
-
     }
     async Task SignInAnonymouslyAsync()
     {
@@ -46,6 +55,7 @@ public class LoadGame : MonoBehaviour
             // Notify the player with the proper error message
             Debug.LogException(ex);
         }
+        SceneManager.LoadScene("Menu");
     }
     void SetupEvents()
     {
@@ -73,10 +83,5 @@ public class LoadGame : MonoBehaviour
           {
               Debug.Log("Player session could not be refreshed and expired.");
           };
-    }
-
-    public void PlayPressed()
-    {
-        SceneManager.LoadScene("Menu");
     }
 }
