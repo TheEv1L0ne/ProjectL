@@ -12,9 +12,16 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 469c24fdb3bd6431b92cc1465bd9166b, type: 3}
   m_Name: RemoteConfigDataStoreAsset
   m_EditorClassIdentifier: 
-  _rsKeyList: '[]'
-  _rsLastCachedKeyList: '[]'
+  _rsKeyList: "[\r\n  {\r\n    \"metadata\": {\r\n      \"entityId\": \"e8b5add4-c947-4f80-89a3-be6125a32b28\"\r\n   
+    },\r\n    \"rs\": {\r\n      \"key\": \"EndLevelInterstitial.test\",\r\n     
+    \"type\": \"int\",\r\n      \"value\": 20\r\n    }\r\n  }\r\n]"
+  _rsLastCachedKeyList: "[\r\n  {\r\n    \"metadata\": {\r\n      \"entityId\": \"e8b5add4-c947-4f80-89a3-be6125a32b28\"\r\n   
+    },\r\n    \"rs\": {\r\n      \"key\": \"EndLevelInterstitial.test\",\r\n     
+    \"type\": \"int\",\r\n      \"value\": 20\r\n    }\r\n  }\r\n]"
   _environments: "[\r\n  {\r\n    \"projectId\": \"59f05879-a26c-4c72-ac9c-fec7ae7e5455\",\r\n   
     \"name\": \"production\",\r\n    \"id\": \"99924111-4ca2-4c5d-94c8-cb1176fa6319\",\r\n   
     \"isDefault\": true,\r\n    \"createdAt\": \"2023-06-22T20:47:56Z\",\r\n    \"updatedAt\":
-    \"2023-06-22T20:47:56Z\"\r\n  }\r\n]"
+    \"2023-06-22T20:47:56Z\"\r\n  },\r\n  {\r\n    \"projectId\": \"59f05879-a26c-4c72-ac9c-fec7ae7e5455\",\r\n   
+    \"name\": \"development\",\r\n    \"id\": \"39f705e9-5798-4d1c-9c04-15874699ee03\",\r\n   
+    \"isDefault\": false,\r\n    \"createdAt\": \"2023-07-09T16:46:01Z\",\r\n   
+    \"updatedAt\": \"2023-07-09T16:46:01Z\"\r\n  }\r\n]"
