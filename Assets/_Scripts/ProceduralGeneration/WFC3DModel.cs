@@ -24,8 +24,8 @@ public class WFC3DModel
     {
         {Vector3Int.left , 2},
         {Vector3Int.right , 0},
-        {Vector3Int.forward , 1}, // should be 3?
-	    {Vector3Int.back , 3}, // should be 1?
+        {Vector3Int.back , 1}, // should be 3?
+	    {Vector3Int.forward , 3}, // should be 1?
 	    {Vector3Int.up , 4},
         {Vector3Int.down , 5}
     };
@@ -80,7 +80,6 @@ public class WFC3DModel
         var possiblePrototypes = waveFunction[coords.z][coords.y][coords.x];
         var selection = WeightedChoice(possiblePrototypes);
         var prototype = possiblePrototypes[selection];
-
         waveFunction[coords.z][coords.y][coords.x] = new Dictionary<string, PrototypeData>() 
         {
             {selection,prototype}
@@ -88,20 +87,16 @@ public class WFC3DModel
     }
     private string WeightedChoice(Dictionary<string, PrototypeData> prototypes)
     {
-        if(prototypes?.Count == 0) return null;
-
-
-        var maxFloat = prototypes.First();
-
-        for (int i = 1; i < prototypes.Count; i++)
+        var protoWeights = new Dictionary<float,KeyValuePair<string, PrototypeData>>();
+        foreach(var p in prototypes)
         {
-            if(maxFloat.Value.weight < prototypes.ElementAt(i).Value.weight)
-            {
-                maxFloat = prototypes.ElementAt(i);
-            }
+            var w = p.Value.weight;
+            w += UnityEngine.Random.Range(-1f,1f);
+            protoWeights[w] = p;
         }
-
-        return maxFloat.Key;
+        var weightMax = protoWeights.Keys.Max(x=>x);
+        
+        return prototypes.First().Key;
     }
 
     private float GetEntropy(Vector3Int coords)
@@ -123,7 +118,6 @@ public class WFC3DModel
                     var entropy = GetEntropy(new Vector3Int(x, y, z));
                     if(entropy > 1)
                     {
-                        entropy += UnityEngine.Random.Range(-0.1f, 0.1f);
                         if (min_entropy == float.MaxValue)
                         {
                             min_entropy = entropy;
@@ -144,7 +138,7 @@ public class WFC3DModel
 
     public void Propagate(Vector3Int? coords, bool singleIteration = false)
     {
-        if (coords != null)
+        if (coords != null && coords != Vector3Int.zero)
         {
             stack.Push(coords.Value);
         }
@@ -155,7 +149,7 @@ public class WFC3DModel
             {
                 var otherCoords = currentCoords + direction;
                 var posibleNeighbours = GetPossibleNeighbours(currentCoords, direction);
-                var otherPosiblePrototypes = GetPosibilities(otherCoords);
+                var otherPosiblePrototypes = GetPosibilities(otherCoords).ToList();
 
                 if (otherPosiblePrototypes.Count == 0) continue;
 
@@ -189,7 +183,8 @@ public class WFC3DModel
             var neighbours = prototype.Value.valid_neighbours[dirIdx];
             foreach (var neighbour in neighbours)
             {
-                validNeighbours.Add(neighbour);
+                if (!validNeighbours.Contains(neighbour))
+                    validNeighbours.Add(neighbour);
             }
         }
 

@@ -176,6 +176,11 @@ MonoBehaviour:
   resumeGameBtn: {fileID: 7524973235921204565}
   startPlusGameBtn: {fileID: 1607797725148159408}
   startXGameBtn: {fileID: 4232103956948096122}
+  startLGameBtn: {fileID: 0}
+  startTGameBtn: {fileID: 0}
+  startHGameBtn: {fileID: 0}
+  startOGameBtn: {fileID: 0}
+  numberOfMoves: {fileID: 0}
 --- !u!1 &1044220135105793747
 GameObject:
   m_ObjectHideFlags: 0

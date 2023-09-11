@@ -19,6 +19,7 @@ public class WFC3DMain : MonoBehaviour
 
     private List<GameObject> meshes = new List<GameObject>();
     private int my_seed = 1;
+    private Vector3 offset = new Vector3(0.5f,0.5f,0.5f);
     private void Awake()
     {
         Generate();
@@ -34,7 +35,7 @@ public class WFC3DMain : MonoBehaviour
     private void Generate()
     {
         ClearMeshes();
-        UnityEngine.Random.InitState(GetSeed());
+        UnityEngine.Random.InitState(177622);
 
 
         var prototypes = LoadPrototypeData();
@@ -51,17 +52,7 @@ public class WFC3DMain : MonoBehaviour
         {
             RegeNoUpdate();
         }
-        //VisualizeWaveFunction();
-        // 	while not wfc.is_collapsed():
-        // 		wfc.iterate()
-        // 		clear_meshes()
-        // 		visualize_wave_function()
-        // 		yield(get_tree(), "idle_frame")
-        // 	clear_meshes()
-        // else:
-        // 	regen_no_update()
 
-        // visualize_wave_function()
     }
 
     private void RegeNoUpdate()
@@ -100,8 +91,8 @@ public class WFC3DMain : MonoBehaviour
                         var mesh_rotation = dict.mesh_rotation;
 
                         if (mesh_name == "-1") continue;
-
-                        var mesh = Instantiate(Resources.Load<GameObject>(meshPath + "/" + mesh_name), new Vector3Int(x, y, z),Quaternion.Euler(0, -Mathf.PI / 2 * mesh_rotation * Mathf.Rad2Deg, 0));
+                        Debug.LogError(mesh_name);
+                        var mesh = Instantiate(Resources.Load<GameObject>(meshPath + "/" + mesh_name), new Vector3(x, y, z) + offset,Quaternion.Euler(0, -(Mathf.PI / 2 )* mesh_rotation * Mathf.Rad2Deg, 0));
                         meshes.Add(mesh);
 
 
