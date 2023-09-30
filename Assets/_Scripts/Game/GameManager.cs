@@ -2,6 +2,7 @@ using System.Collections.Generic;
 using System.Linq;
 using _Scripts.Game.GameField;
 using _Scripts.Game.GameField.UI;
+using _Scripts.Popups;
 using UnityEngine;
 using Random = UnityEngine.Random;
 
@@ -96,14 +97,26 @@ public class GameManager : Singleton<GameManager>, IObserver
         if (_matrix.IsSolved())
         {
             //TODO: SHOW FINISH WINDOW
-            Debug.Log($"WIN");
+            Debug.Log($"--->> WIN");
             _state = GameState.WIN;
+            
+            ObserverManager.AddData("popupParams", new PauseGameParams
+                {SomeString = "Something"});
+            ObserverManager.AddData("popupShowAction", PopupAction.Later);
+            
+            ObserverManager.Notify( ODType.Game, ODType.UI);
         }
         else if (_numberOfMoves == 0)
         {
             //TODO: SHOW FAILED WINDOW
-            Debug.Log($"LOSE");
+            Debug.Log($"--->> LOSE");
             _state = GameState.LOSE;
+            
+            ObserverManager.AddData("popupParams", new PauseGameParams
+                {SomeString = "Something"});
+            ObserverManager.AddData("popupShowAction", PopupAction.Later);
+            
+            ObserverManager.Notify( ODType.Game, ODType.UI);
         }
     }
 
