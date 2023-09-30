@@ -9,6 +9,6 @@ public class HUD : MonoBehaviour
 
     public void SetMoves(string movesLeft)
     {
-        moves.text = $"Moves left: {movesLeft}";
+        moves.text = $"MOVES: {movesLeft}";
     }
 }

@@ -4,6 +4,8 @@ using UnityEngine;
 public class GameFieldNode : MonoBehaviour
 {
     [SerializeField] private SpriteRenderer nodeSprite;
+    [SerializeField] private Sprite dirtImage;
+    [SerializeField] private Sprite grass1Image;
     
     private Action<int> _action;
     
@@ -19,13 +21,11 @@ public class GameFieldNode : MonoBehaviour
 
     public void ChangeNodeGraphics(bool state)
     {
-        //nodeSprite.color = state ? Color.green : Color.white;
-        nodeSprite.gameObject.SetActive(state);
+        nodeSprite.sprite = state ? grass1Image : dirtImage;
     }
 
     public void ResetNode()
     {
-        //nodeSprite.color = Color.white;
-        nodeSprite.gameObject.SetActive(false);
+        nodeSprite.sprite = dirtImage;
     }
 }
