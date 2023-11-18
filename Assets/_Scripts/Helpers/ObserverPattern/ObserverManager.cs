@@ -41,6 +41,31 @@ public class ObserverManager
         ClearData();
     }
 
+
+    public static void Notify(Dictionary<string, object> dataDictionary, params object[] receivers)
+    {
+        ClearData();
+        
+        if (Observers == null) return;
+
+        foreach (var data in dataDictionary)
+        {
+            AddData(data.Key, data.Value);
+        }
+
+        if (_data.Count == 0)
+        {
+            Debug.LogWarning($"Sending No Data!");
+        }
+
+        foreach (var observer in Observers)
+        {
+            observer.UpdateState(_data , receivers);
+        }
+
+        
+    }
+
     private static void ClearData()
     {
         _data = new Dictionary<string, object>();
