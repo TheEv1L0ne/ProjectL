@@ -18,27 +18,27 @@ namespace _Scripts.Popups
             _popupRoot = popupRoot;
         }
         
-        public void ShowPopup(BaseParams popupParams, PopupAction popupAction)
+        public IEnumerator ShowPopup(BaseParams popupParams, PopupAction popupAction)
         {
-            LoadGoUsingClass(popupParams);
-        }
-
-        private void LoadGoUsingClass(BaseParams popupParams)
-        {
-            var address = $"Popups/Popup{(popupParams.GetType().Name).Replace("Params", "")}";
-            
-            Addressables.InstantiateAsync(address, _popupRoot).Completed +=
-                OnLoadDone;
+           yield return LoadGoUsingClass(popupParams);
         }
         
-        private void OnLoadDone(AsyncOperationHandle<GameObject> obj)
+        private IEnumerator LoadGoUsingClass(BaseParams popupParams)
+        {
+            var address = $"Popups/Popup{(popupParams.GetType().Name).Replace("Params", "")}";
+            var handle = Addressables.InstantiateAsync(address, _popupRoot, trackHandle:true);
+            yield return handle;
+            
+            OnLoadDone(handle, popupParams);
+        }
+        
+        private void OnLoadDone(AsyncOperationHandle<GameObject> obj, BaseParams popupParams)
         {
             var popup = obj.Result.GetComponent<PopupBase>();
 
             _popupBasesList.Add(popup);
-
-            var baseParams = new PauseGameParams();
-            popup.OnShow(baseParams);
+            
+            popup.OnShow(popupParams);
         }
 
         public void RemovePopup(PopupBase popup)

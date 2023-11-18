@@ -48,7 +48,7 @@ public class UIManager : Singleton<UIManager>, IObserver
 
             popupAction = (PopupAction) popupShowAction;
             
-            _popupController.ShowPopup(baseParams, popupAction);
+            StartCoroutine(_popupController.ShowPopup(baseParams, popupAction));
         }
 
         if (data.TryGetValue("closePopup", out var popupToClose))
